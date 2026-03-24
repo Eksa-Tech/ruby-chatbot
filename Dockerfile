@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     fonts-freefont-ttf \
     libxss1 \
     --no-install-recommends \
+    && gem install bundler \
     && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables untuk Puppeteer
