@@ -10,7 +10,9 @@ Chatbot WhatsApp AI canggih yang dibangun dengan arsitektur terpisah (decoupled 
 ## ✨ Fitur Utama
 
 - **Arsitektur Terpisah**: Pemisahan yang jelas antara logika koneksi dan logika AI.
-- **Penyaringan Pintar**: Secara otomatis mengabaikan update status WhatsApp dan pesan grup (hanya membalas chat pribadi).
+- **Penyaringan Pintar**: Secara otomatis mengabaikan update status WhatsApp dan pesan grup.
+- **Toggle Bot Aktif/Nonaktif**: Kontrol penuh untuk mematikan atau menyalakan respon bot langsung dari dashboard.
+- **Jeda Respon 5 Detik**: Memberikan jeda waktu sebelum membalas agar interaksi terasa lebih alami.
 - **Dashboard Real-time**: Antarmuka web untuk memindai QR Code dan memantau log secara langsung.
 - **Sesi Persisten**: Menggunakan `LocalAuth` untuk menjaga Anda tetap login meskipun container dijalankan ulang.
 - **Performa Tinggi**: Ruby Brain berjalan di atas `eksa-server` untuk penanganan respon yang sangat cepat.

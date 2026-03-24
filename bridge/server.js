@@ -23,8 +23,18 @@ process.on('uncaughtException', (err) => {
 const PORT = process.env.PORT || 3001;
 const BRAIN_URL = process.env.BRAIN_URL || 'http://localhost:5000/api/webhook/whatsapp';
 
+let botEnabled = true;
+
 app.use(express.json());
 app.use(express.static('public'));
+
+// API to toggle bot
+app.post('/api/toggle-bot', (req, res) => {
+    botEnabled = req.body.enabled !== undefined ? req.body.enabled : !botEnabled;
+    io.emit('bot-status', botEnabled);
+    console.log(`Bot state changed to: ${botEnabled ? 'ENABLED' : 'DISABLED'}`);
+    res.json({ success: true, enabled: botEnabled });
+});
 
 // Log capture to stream to web
 const originalLog = console.log;
@@ -87,6 +97,12 @@ client.on('message', async (msg) => {
         return; // Ignore group messages
     }
 
+    // Check if bot is enabled
+    if (!botEnabled) {
+        console.log(`Bot is DISABLED. Skipping message from ${msg.from}`);
+        return;
+    }
+
     console.log(`Received message from ${msg.from}: ${msg.body}`);
     
     try {
@@ -106,19 +122,25 @@ app.post('/send-message', async (req, res) => {
     const { to, body } = req.body;
     if (!to || !body) return res.status(400).send('Missing to or body');
     
-    try {
-        await client.sendMessage(to, body);
-        console.log(`Sent message to ${to}: ${body}`);
-        res.status(200).send('Message sent');
-    } catch (err) {
-        console.error('Error sending message:', err.message);
-        res.status(500).send('Error sending message');
-    }
+    // Respond immediately to Brain to prevent timeout
+    res.status(200).send('Message queued with 5s delay');
+
+    console.log(`Queuing message to ${to} (5s delay)...`);
+
+    setTimeout(async () => {
+        try {
+            await client.sendMessage(to, body);
+            console.log(`Sent message to ${to} (after 5s): ${body}`);
+        } catch (err) {
+            console.error('Error sending delayed message:', err.message);
+        }
+    }, 5000);
 });
 
 io.on('connection', (socket) => {
     console.log('Web client connected');
     socket.emit('status', client.info ? 'Ready' : 'Waiting for QR');
+    socket.emit('bot-status', botEnabled);
 });
 
 server.listen(PORT, () => {
