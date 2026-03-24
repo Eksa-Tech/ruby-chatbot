@@ -29,9 +29,11 @@ PLATFORMS
   x86_64-linux-gnu
 
 DEPENDENCIES
+  bigdecimal (~> 4.0)
   dotenv
   eksa-server
   httparty
+  multi_xml (~> 0.8)
   rack
   rack-contrib
 

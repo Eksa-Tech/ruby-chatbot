@@ -29,7 +29,9 @@ RUN cd bridge && npm install
 
 # Copy Gemfile dan install Ruby dependencies
 COPY brain/Gemfile* ./brain/
-RUN cd brain && bundle install
+RUN cd brain && \
+    bundle config set --local path 'vendor/bundle' && \
+    bundle install --jobs 4 --retry 3
 
 # Copy semua file project
 COPY . .
