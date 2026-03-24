@@ -1,0 +1,7 @@
+source 'https://rubygems.org'
+
+gem 'eksa-server'
+gem 'httparty'
+gem 'dotenv'
+gem 'rack'
+gem 'rack-contrib'

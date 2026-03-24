@@ -1,0 +1,21 @@
+# Dependency folders
+**/node_modules/
+**/.bundle/
+**/vendor/bundle/
+
+# WhatsApp sessions
+**/.wwebjs_auth/
+**/.wwebjs_cache/
+**/session/
+
+# Environment and secrets
+.env
+**/.env
+**/.env.local
+
+# IDE and system files
+.ruby-lsp/
+.vscode/
+.DS_Store
+*.log
+tmp/
