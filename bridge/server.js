@@ -11,6 +11,15 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+// Global Error Handlers to prevent process crash
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception thrown:', err);
+});
+
 const PORT = process.env.PORT || 3001;
 const BRAIN_URL = process.env.BRAIN_URL || 'http://localhost:5000/api/webhook/whatsapp';
 
@@ -30,7 +39,13 @@ const client = new Client({
     }),
     puppeteer: {
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || null,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: [
+            '--no-sandbox', 
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-gpu',
+            '--no-zygote'
+        ],
     }
 });
 
@@ -98,5 +113,9 @@ io.on('connection', (socket) => {
 
 server.listen(PORT, () => {
     console.log(`Bridge Server running on http://localhost:${PORT}`);
-    client.initialize();
+    try {
+        client.initialize();
+    } catch (err) {
+        console.error('Failed to initialize WhatsApp Client:', err.message);
+    }
 });
