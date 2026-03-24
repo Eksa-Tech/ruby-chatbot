@@ -77,6 +77,16 @@ client.on('auth_failure', (msg) => {
 });
 
 client.on('message', async (msg) => {
+    // Filter out status updates and group messages
+    if (msg.from === 'status@broadcast') {
+        return; // Ignore status updates
+    }
+    
+    if (msg.from.endsWith('@g.us')) {
+        console.log(`Ignoring group message from ${msg.from}`);
+        return; // Ignore group messages
+    }
+
     console.log(`Received message from ${msg.from}: ${msg.body}`);
     
     try {
