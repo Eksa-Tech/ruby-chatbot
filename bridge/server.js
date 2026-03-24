@@ -12,7 +12,7 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 const PORT = process.env.PORT || 3001;
-const BRAIN_URL = process.env.BRAIN_URL || 'http://localhost:3000/api/webhook/whatsapp';
+const BRAIN_URL = process.env.BRAIN_URL || 'http://localhost:5000/api/webhook/whatsapp';
 
 app.use(express.json());
 app.use(express.static('public'));

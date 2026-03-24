@@ -5,7 +5,7 @@ require 'rack'
 require 'rack/contrib'
 
 class WhatsAppBrain
-  BRIDGE_URL = ENV['BRIDGE_URL'] || 'http://localhost:3001/send-message'
+  BRIDGE_URL = ENV['BRIDGE_URL'] || "http://localhost:#{ENV['PORT'] || 3001}/send-message"
   GROQ_API_KEY = ENV['GEMINI_API_KEY'] # Keeping the variable name for simplicity or renaming it
   GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 

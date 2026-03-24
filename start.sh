@@ -15,16 +15,16 @@ echo "🚀 Menjalankan WhatsApp AI Chatbot..."
 echo "------------------------------------------"
 
 # 1. Jalankan Ruby Brain di background
-echo "1. Memulai Ruby Brain (eksa-server) di port 3000..."
-(cd brain && bundle exec eksa-server -p 3000 -c 0 config.ru > /dev/null 2>&1) &
+echo "1. Memulai Ruby Brain (eksa-server) di port 5000..."
+(cd brain && bundle exec eksa-server --host 0.0.0.0 -p 5000 -c 0 config.ru) &
 BRAIN_PID=$!
 
 # Cek apakah brain berhasil jalan
-sleep 2
+sleep 3
 if ps -p $BRAIN_PID > /dev/null; then
     echo "✅ Ruby Brain berhasil dijalankan (PID: $BRAIN_PID)"
 else
-    echo "❌ Gagal menjalankan Ruby Brain. Periksa konfigurasi Anda."
+    echo "❌ Gagal menjalankan Ruby Brain. Periksa log di atas."
     exit 1
 fi
 
